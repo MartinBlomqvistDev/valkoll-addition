@@ -1,0 +1,53 @@
+sources:
+  valkoll_incident_page: https://valkoll.com/incidentrapporter/
+  # Downloaded manually from the val.se raw data page; the file is not versioned.
+  valse_raw_page: https://www.val.se/valresultat-och-statistik/statistik-och-data/radata-val-2026
+  valse_riksdag_votes:
+    file: data/raw/valse/roster-per-distrikt-slutligt-antal-roster-inklusive-totalt-valdeltagande-riksdagsvalet-2026.xlsx
+    sha256: 6e170f9ae4622659f0fff39a2d5b086dfd9163fd3fe9b914f798ff72a5500231
+    sheet: Valdeltagande_kommun
+  # Incident reports, obtained from Valmyndigheten as allmän handling 2026-10-13 (file dated 2026-10-12).
+  # Holds free text: never versioned, never sent to external services.
+  valmyndigheten_reports:
+    file: data/raw/20261012_Incidentrapporter_valen_2026.xlsx
+    sha256: 4b1d2aa07388c6d3148610b0ed8a6e072c8e91c295532a3c608a059b4fe9321a
+    header_row: 2
+    # Valkoll's version was released 2026-09-29 and covers reports received up to this date.
+    valkoll_period_end: "2026-09-28 23:59:59"
+    # Rows read by Martin 2026-10-13. Criterion: the report was sent to try the reporting
+    # system and describes no event in the election. Valkoll removes three but does not say which.
+    test_report_rows: [134, 627, 5091, 5092]
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  output_dir: outputs
+
+# Published figures from the Valkoll page, used as reproduction targets.
+published:
+  reports_total: 5194
+  reports_by_reporter: {Valkansli: 3073, Röstmottagning: 2036, Länsstyrelse: 55, Utlandsmyndighet: 27}
+  reports_by_category: {Valsedlar: 2579, "Otillåten påverkan": 428, Övrigt: 312}
+  reports_secret: 26
+  # Ballot reports: reports where the party was favoured / disadvantaged (Valkoll, Partierna vid lokalen)
+  party_favoured_disadvantaged: {V: [76, 188], SD: [261, 226]}
+  reports_without_tests: 5191
+  reports_without_tests_and_duplicates: 5153
+  likely_duplicates: 38
+  kommun_reports_total: 5077
+  eligible_voters_total: 8051355
+  national_rate_per_10k: 6.31
+  kommuner_without_report: 27
+  highest_rate: {name: Munkfors, rate: 78.33}
+  lowest_large_rate: {name: Västerås, rate: 0.25}
+  large_kommun_min_voters: 100000
+  rate_bins:  # upper bound (exclusive) -> number of kommuner; zero handled separately
+    "2.5": 53
+    "5": 64
+    "10": 64
+    "20": 55
+    "inf": 27
+
+reporting_rate:
+  funnel_limits: [0.95, 0.998]
+  per: 10000

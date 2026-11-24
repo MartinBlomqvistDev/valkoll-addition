@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Valmyndighetens rapportfil innehåller fritext och får aldrig versionshanteras
+data/raw/*.xlsx
+data/raw/*.xls
+data/interim/
+
+# Utkast och arbetsmaterial, versionshanteras inte
+drafts/
+data/raw/valse/*.xlsx
+data/raw/valse/*.zip
+
+# Valkolls sida innehåller utdrag ur rapporterna; ögonblicksbilder versionshanteras inte
+data/raw/*.html

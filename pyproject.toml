@@ -1,0 +1,20 @@
+[project]
+name = "valkoll-addition"
+version = "0.1.0"
+description = "Statistical review of Valkoll's analysis of the 2026 election incident reports"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "scipy>=1.14",
+    "statsmodels>=0.14",
+    "pydantic>=2.8",
+    "pyyaml>=6.0",
+    "matplotlib>=3.9",
+    "requests>=2.32",
+    "tabulate>=0.10.0",
+    "openpyxl>=3.1.5",
+]
+
+[tool.uv]
+package = false

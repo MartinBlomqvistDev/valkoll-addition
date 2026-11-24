@@ -6,7 +6,7 @@ The analysis can strengthen or weaken Valkoll's conclusions, and both directions
 
 ## Results
 
-**1. The kommun map mostly measures how willing each kommun was to report.** If every kommun reported at the national rate (6.31 per 10,000 eligible voters), about 15 of 290 would fall outside the 95 % limits by chance. 149 do. The variance between kommuner is about 23 times what chance gives (Pearson dispersion 22.96), and small kommuner report more per voter than large ones (size elasticity -0.24, 95 % CI -0.36 to -0.12). Västerås would have had about 77 reports at the national rate and has 3.
+**1. The kommun map mostly measures how willing each kommun was to report.** If every kommun reported at the national rate (6.31 per 10,000 eligible voters), about 15 of 290 would fall outside the 95 % limits by chance. 149 do. The variance between kommuner is about 23 times what chance gives (Pearson dispersion 22.96), and small kommuner report more per voter than large ones (size elasticity -0.24, 95 % CI -0.35 to -0.12). Västerås would have had about 77 reports at the national rate and has 3.
 
 ![Reporting rate per kommun against size](outputs/12_rapporteringstakt_ljus.png)
 
@@ -56,9 +56,12 @@ uv sync
 uv run python pipeline/05_tests_published.py
 uv run python pipeline/08_reporting_rate_model.py
 uv run python pipeline/12_publication_figure.py
+uv run pytest
 ```
 
 These three run on the committed tables in `data/processed/`. Step 00 fetches Valkoll's page again and rebuilds the kommun table. The steps that read Valmyndigheten's files need the files placed at the paths in `config.yaml`. Each step checks the file hash and stops if it differs.
+
+The 55 tests use synthetic inputs and the committed tables, never the incident file. They check the validation in each step, Valkoll's duplicate definition, the model on simulated data with a known answer, and that every figure in the results above follows from the committed data.
 
 ## Open questions
 

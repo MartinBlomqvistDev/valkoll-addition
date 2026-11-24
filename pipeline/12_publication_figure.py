@@ -142,9 +142,13 @@ def draw(df: pd.DataFrame, national: float, theme: dict, out: Path) -> None:
     fig.text(0.06, 0.915, f"Varje prick är en kommun. {n_out} av {len(df)} ligger utanför det skuggade fältet "
              f"(blå). Om skillnaderna\nbara vore slump skulle det vara omkring {int(len(df) * 0.05 + 0.5)}.",
              fontsize=10.5, color=theme["muted"], va="top")
-    fig.text(0.06, 0.02, "Källa: Valmyndighetens incidentrapporter och slutliga sammanräkning, valen 2026. "
-             "Fältet är 95 % av utfallen vid samma takt i hela landet.", fontsize=8.5, color=theme["muted"])
-    fig.subplots_adjust(left=0.09, right=0.97, top=0.82, bottom=0.13)
+    fig.text(0.06, 0.05, "Källa: Valkolls kommuntabell, byggd på Valmyndighetens incidentrapporter, och "
+             "Valmyndighetens slutliga sammanräkning, valen 2026.", fontsize=8.5, color=theme["muted"])
+    fig.text(0.06, 0.02, "Fältet är 95 % av utfallen vid samma takt i hela landet.", fontsize=8.5,
+             color=theme["muted"])
+    fig.text(0.97, 0.02, "Martin Blomqvist · github.com/MartinBlomqvistDev/valkoll-addition", fontsize=8.5,
+             color=theme["fg"], ha="right")
+    fig.subplots_adjust(left=0.09, right=0.97, top=0.82, bottom=0.155)
     fig.savefig(out, facecolor=theme["bg"])
     plt.close(fig)
 

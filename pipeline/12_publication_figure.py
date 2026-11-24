@@ -18,10 +18,10 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 from matplotlib.ticker import FixedLocator, FuncFormatter, NullLocator  # noqa: E402
-from scipy.stats import poisson  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from valkoll.config import load_config, resolve  # noqa: E402
+from valkoll.funnel import exact_limits, smooth_quantile, thousands  # noqa: E402
 
 THEMES = {
     "ljus": {"bg": "#f7f6f2", "fg": "#171717", "muted": "#61656d", "grid": "#e9e7e0",
@@ -32,48 +32,6 @@ THEMES = {
 # name -> text position in data coordinates (x, y), placed in empty space with a leader line
 LABELLED = {"Munkfors": None, "Västerås": (160_000, 18), "Göteborg": (520_000, 18)}
 TICKS = [2_000, 5_000, 10_000, 20_000, 50_000, 100_000, 200_000, 500_000]
-
-
-def exact_limits(expected: np.ndarray, cov: float) -> tuple[np.ndarray, np.ndarray]:
-    """Exact Poisson limits, as in step 08; used to colour the dots.
-
-    Args:
-        expected: Expected report counts under the national rate.
-        cov: Coverage, e.g. 0.95.
-
-    Returns:
-        Lower and upper count limits.
-    """
-    a = (1 - cov) / 2
-    return poisson.ppf(a, expected), poisson.ppf(1 - a, expected)
-
-
-def smooth_quantile(q: float, expected: np.ndarray) -> np.ndarray:
-    """Poisson quantile made continuous by interpolating the CDF between whole counts.
-
-    Gives a smooth band that crosses each step of the exact limits, so no kommun ends up
-    on the other side of the band from its colour (checked: same 149 kommuner outside).
-
-    Args:
-        q: Quantile, e.g. 0.025.
-        expected: Expected report counts.
-
-    Returns:
-        Continuous quantile per expected value.
-    """
-    out = np.empty_like(expected, dtype=float)
-    for i, m in enumerate(expected):
-        k = np.arange(0, int(m * 1.5) + 50)
-        c = poisson.cdf(k, m)
-        j = int(np.searchsorted(c, q))
-        c0 = c[j - 1] if j > 0 else 0.0
-        out[i] = (k[j] - 1) + (q - c0) / (c[j] - c0)
-    return np.clip(out, 0, None)
-
-
-def thousands(x: float, _pos: int) -> str:
-    """Format an axis value with a Swedish thousands separator."""
-    return f"{int(x):,}".replace(",", " ")
 
 
 def draw(df: pd.DataFrame, national: float, theme: dict, out: Path) -> None:

@@ -34,6 +34,7 @@ The validation Valkoll reports (100 of 100 rows with the right party) bounds the
 | `05_tests_published.py` | Exact binomial tests on the published party counts | `outputs/05_tests_published.md` |
 | `08_reporting_rate_model.py` | Dispersion test, funnel plot, negative binomial with size, empirical Bayes shrinkage per kommun | `outputs/08_*` |
 | `12_publication_figure.py` | The reporting-rate figure for a general reader, in Valkoll's light and dark styles | `outputs/12_*.png` |
+| `13_feed_figure.py` | The same figure in portrait format for a social media feed | `outputs/13_*.png` |
 
 Reports in `outputs/` are written in Swedish, as is the source material.
 
@@ -61,7 +62,7 @@ uv run pytest
 
 These three run on the committed tables in `data/processed/`. Step 00 fetches Valkoll's page again and rebuilds the kommun table. The steps that read Valmyndigheten's files need the files placed at the paths in `config.yaml`. Each step checks the file hash and stops if it differs.
 
-The 55 tests use synthetic inputs and the committed tables, never the incident file. They check the validation in each step, Valkoll's duplicate definition, the model on simulated data with a known answer, and that every figure in the results above follows from the committed data.
+The 56 tests use synthetic inputs and the committed tables, never the incident file. They check the validation in each step, Valkoll's duplicate definition, the model on simulated data with a known answer, and that every figure in the results above follows from the committed data.
 
 ## Open questions
 

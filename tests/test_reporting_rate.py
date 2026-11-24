@@ -101,3 +101,15 @@ def test_readme_binomial_tests_follow_from_published_counts(cfg, party, share, c
     assert round(fav / (fav + dis), 2) == share
     assert (round(low_high.low, 2), round(low_high.high, 2)) == ci
     assert f"{r.pvalue:.2g}" == p
+
+
+def test_smooth_band_puts_every_kommun_on_the_same_side_as_the_exact_limits(kommuner):
+    from valkoll.funnel import exact_limits, smooth_quantile
+    national = kommuner.rapporter.sum() / kommuner.rostberattigade.sum()
+    expected = kommuner.rostberattigade.to_numpy() * national
+    lo, hi = exact_limits(expected, 0.95)
+    exact_outside = (kommuner.rapporter < lo) | (kommuner.rapporter > hi)
+    y = kommuner.rapporter.to_numpy()
+    band_outside = (y < smooth_quantile(0.025, expected)) | (y > smooth_quantile(0.975, expected) + 1)
+    assert (exact_outside.to_numpy() == band_outside).all()
+    assert int(exact_outside.sum()) == 149
